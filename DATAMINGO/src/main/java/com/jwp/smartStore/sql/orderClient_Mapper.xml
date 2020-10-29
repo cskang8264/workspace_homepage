@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jwp.smartStore.sql.orderClient_Mapper">
+
+
+	<select id="selectRowCount" resultType="Integer">
+
+		SELECT COUNT(*)
+
+		FROM tx
+
+	</select>
+
+	<select id="ClientOrderList" resultType="map"
+		parameterType="map">
+		select *
+		from
+		tx where user_id = '01067785799'
+		<if test="tx_id != null ">
+			AND tx_id = #{tx_id}
+		</if>
+		
+		<if test="limitation != null ">
+			LIMIT ${startNo}, ${limitation}
+		</if>
+
+	</select>
+
+	<select id="ClientOrderDetail" resultType="map"
+		parameterType="map">
+		select *
+		from
+		tx_detail
+		where tx_id = #{tx_id}
+
+	</select>
+
+
+	<select id="selectStatusBytx" resultType="String"
+		parameterType="map">
+
+		select status
+		from
+		tx
+		where tx_id = #{tx_id}
+
+	</select>
+
+
+
+
+</mapper>
+

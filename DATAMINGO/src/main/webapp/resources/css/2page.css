@@ -1,0 +1,205 @@
+@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+a {
+  font-family: 'Nanum Gothic', sans-serif;
+  font-size: 15px;
+  font-weight:bolder;
+  color :#6c7a89 !important;
+  text-align: center;
+}
+input {
+  font-family: 'Nanum Gothic', sans-serif;  
+  font-weight:bolder;
+  border: none;
+  background-color :#eeeeee !important;
+}
+.navbar-custom {
+    background-color: #eeeeee;
+}
+
+u {
+    text-decoration: none;
+    border-bottom: 10px solid rgb(238, 238, 25);
+  }
+
+ @media screen and (max-width: 320px) {
+#home{
+    margin-left: 13% !important;
+    }
+#cog {
+    margin-left: 10% !important;
+    }
+#diagnosis {
+    margin-left: 10% !important;
+    }
+#customer {
+    margin-left: 10% !important;
+    }
+#setting {
+    margin-left: 10% !important;
+    }
+
+ }
+
+ @media screen and (min-width: 321px) and (max-width:414px){
+ #home{
+    margin-left: 15% !important;
+    }
+ }
+ @media screen and (min-width: 415px) and (max-width:1000px){
+ #home{
+    margin-left: 15% !important;
+    }
+ }
+ @media screen and (min-width: 1023px) {
+ #home{
+    margin-left: 13% !important;
+    }
+#cog {
+    margin-left: 15% !important;
+    }
+#diagnosis {
+    margin-left: 15% !important;
+    }
+#customer {
+    margin-left: 15% !important;
+    }
+#setting {
+    margin-left: 15% !important;
+    }
+ }
+ 
+ @media screen and (min-width: 320px) and (max-width:415px){
+.iconWithText {
+    font-size:10px !important;
+    
+}
+#left_menu {
+    width:30% !important;
+    left:10% !important;
+    margin-top: 15% !important;
+}
+div >img {
+    width: 60px !important;
+    
+}
+#bars-chart{
+    width: 23% !important;
+    height: 15% !important;
+    
+}
+#calendar{
+    width: 23% !important;
+    height: 15% !important;
+    
+}
+#search{
+    width: 23% !important;
+    height: 15% !important;
+    
+}
+#idea{
+    width: 23% !important;
+    height: 15% !important;
+    
+}
+
+#engineer{
+    width: 23% !important;
+    height: 15% !important;
+    
+}
+#pie-chart{
+    width: 23% !important;
+    height: 15% !important;
+    
+}
+#marker{
+    width: 23% !important;
+    height: 15% !important;
+    
+}
+#star {
+    width: 23% !important;
+    height: 15% !important;
+}
+#icon1 ,#icon2 {
+    margin-left: 5% !important;
+} 
+ }
+ @media screen and (min-width:415px) and (max-width: 1024px) {
+#bars-chart {
+    width: 25% !important;
+    height: 20% !important;
+}
+#calendar{
+    width: 25% !important;
+    height: 20% !important;
+    
+}
+#search{
+    width: 25% !important;
+    height: 20% !important;
+    
+}
+#idea{
+    width: 25% !important;
+    height: 20% !important;
+    
+}
+
+#engineer{
+    width: 25% !important;
+    height: 20% !important;
+    
+}
+#pie-chart{
+    width: 25% !important;
+    height: 20% !important;
+    
+}
+#marker{
+    width: 25% !important;
+    height: 20% !important;
+    
+}
+#star {
+    width: 25% !important;
+    height: 20% !important;
+}
+#icon1 ,#icon2 {
+    margin-left: 5% !important;
+}  
+#left_menu{
+    top:5% !important;
+    left:4% !important;
+    width:20% !important;
+  }
+}  
+.iconWithText {
+    text-align: center;
+    word-break: keep-all;
+}
+
+p {  
+    color :#6c7a89 !important;
+   
+}
+
+html, body {
+    height: 100%;
+}
+
+#page-wrap {
+  min-height: 100%;
+  padding-bottom: 0%;/* 고정된 푸터의 높이값 */ 
+  box-sizing:border-box;
+}
+
+#site-footer {
+  margin-left:0.15%;
+  position:sticky;
+  bottom:0;
+  width:100%;
+  height:10%; 
+  background:#eeeeee;
+}

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jwp.smartStore.sql.order_Mapper">
+  <select id="selectOrder" resultType="map" parameterType="map">
+    select * from smartorder, smart_order_detail where smartorder.order_id = smart_order_detail.order_id
+  </select>
+  
+  
+    <select id="selectOrderDetail" resultType="map" parameterType="map">
+    select *
+    from 
+     smart_order_detail  where order_id = #{order_id}
+  </select>
+  
+  
+  <update id="updateOrdercancel" parameterType="map">
+		UPDATE smartorder SET
+		order_status = 2
+		WHERE order_id = #{order_id}
+	</update>
+	
+		<insert id="insertOrder" parameterType="map">
+		START TRANSACTION;
+		
+		insert into smart_order (customer_phone,manager_phone,order_amount,order_status) values (#{customer_phone},#{manager_phone},#{order_amount},0)
+		insert into smart_order_detail (order_menu,order_value,order_id,order_count) values (#{order_menu},#{order_value},#{order_id},#{order_count})
+		
+		COMMIT;
+		
+	</insert>
+	
+	
+
+  
+  
+</mapper>
+

@@ -1,0 +1,52 @@
+@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+ input {
+    border: none;
+    text-align: center !important;
+    font-family: 'Nanum Gothic', sans-serif;  
+    font-weight:bolder;
+}
+a {
+    color:#6c7a89 !important;
+}   
+.small_TEXT {
+    color :#6c7a89 !important;
+    font-size: 13px;
+}
+.middle_SORT {
+    margin-left: auto; 
+    margin-right: auto;
+}
+.middle_SORT2 {
+    text-align: center;
+}
+.margin_TOP {
+    margin-top:20px;
+}
+.vertical_middle_SORT {
+    margin-top: auto; 
+    margin-bottom: auto;
+}
+.margin_TOP > input {
+    margin-top: 10px;
+}
+.black_BIG {
+    font-size: 35px;
+    color: black;
+}
+.RED {
+    color:red;
+}
+@media screen and (max-width: 768px) {
+#ad_money-container {
+    width:100% !important;
+}
+#upload-container {
+    width:100% !important; 
+}
+#BarChart-container {
+    width:100% !important; 
+}
+#BarChart2-container {
+    width:100% !important; 
+}
+}

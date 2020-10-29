@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jwp.smartStore.sql.noticeBoard_Mapper">
+	<select id="selectBoardList" resultType="map"
+		parameterType="map">
+		select *
+		from notice_board order by board_date desc
+		<if test="limitation != null ">
+			LIMIT ${startNo}, ${limitation}
+		</if>
+		;
+	</select>
+
+	<select id="selectRowCount" resultType="Integer">
+		SELECT count(*)
+		FROM
+		notice_board ;
+	</select>
+	
+	<select id="getSelectedBoardbyId" resultType="map" parameterType="map">
+	
+	   SELECT *
+	   FROM 
+	   notice_board
+	   where board_id=#{board_id}
+	
+	
+	
+	</select>
+	
+	<update id="updateBoardById"  parameterType="map">
+	
+		UPDATE notice_board SET
+		
+		title = #{title},
+		text = #{text}
+		
+		WHERE board_id = ${board_id}
+	
+	</update>
+
+
+	<insert id="insertBoard" parameterType="map">
+		INSERT INTO notice_board
+		(
+		title,
+		text,
+		author
+		) VALUES (
+		#{title},
+		#{text},
+		'관리자'
+
+		)
+	</insert>
+	<delete id="deleteBoard" parameterType="map">
+		DELETE FROM notice_board
+		WHERE board_id = #{board_id}
+
+
+	</delete>
+</mapper>

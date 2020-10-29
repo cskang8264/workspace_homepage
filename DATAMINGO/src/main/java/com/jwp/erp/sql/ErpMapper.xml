@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jwp.erp.sql.ErpMapper"><!-- 인터페이스 -->
+	<!-- id-메소드명 resultType=리턴타입 parameterType=파라미터타입 -->
+
+	<select id="selectProduct" resultType="map" parameterType="map">
+		<if test="null == search">
+			SELECT *
+			FROM product2
+			WHERE manager_id = #{manager_id}
+			ORDER BY
+			product_timestamp DESC
+			<if test="null != limitation">
+				LIMIT #{limitation}
+			</if>
+		</if>
+		<if test="null != search">
+			SELECT *
+			FROM product2
+			WHERE
+			<if test='product_no != ""'>
+				product_no LIKE #{product_no} OR
+			</if>
+			<if test='product_name != ""'>
+				product_name LIKE #{product_name} OR
+			</if>
+			AND manager_id = #{manager_id}
+			<if test='limitation != ""'>
+				LIMIT #{limitation}
+			</if>
+		</if>
+
+	</select>
+	<select id="selectSales" resultType="map" parameterType="map">
+		SELECT *
+		FROM sales2
+		WHERE manager_id = #{manager_id}
+		ORDER BY sales_timestamp
+		DESC
+		LIMIT #{limitation}
+	</select>
+	<select id="selectPurchase" resultType="map" parameterType="map">
+		SELECT *
+		FROM purchase2
+		WHERE manager_id = #{manager_id}
+		ORDER BY
+		purchase_timestamp DESC
+		LIMIT #{limitation}
+	</select>
+	<select id="selectCategoryA" resultType="map"
+		parameterType="map">
+		SELECT *
+		FROM category_a
+		WHERE manager_id = #{manager_id}
+		ORDER BY
+		category_a_timestamp DESC
+		<if test="null != limitation">
+			LIMIT #{limitation}
+		</if>
+	</select>
+	<select id="selectCategoryB" resultType="map"
+		parameterType="map">
+		<if test="null == CATEGORY_B">
+			SELECT *
+			FROM category_b
+			WHERE manager_id = #{manager_id}
+			ORDER BY category_b_timestamp DESC
+			<if test="null != limitation">
+				LIMIT #{limitation}
+			</if>
+		</if>
+		<if test="null != CATEGORY_B">
+			SELECT *
+			FROM category_b
+			WHERE manager_id = #{manager_id} AND category_a_no = #{category_a_no}
+			ORDER BY category_b_timestamp DESC
+			<if test="null != limitation">
+				LIMIT #{limitation}
+			</if>
+		</if>
+	</select>
+	<select id="selectCategoryC" resultType="map"
+		parameterType="map">
+		SELECT *
+		FROM category_c
+		WHERE manager_id = #{manager_id}
+		ORDER BY
+		category_c_timestamp DESC
+		<if test="null != limitation">
+			LIMIT #{limitation}
+		</if>
+	</select>
+
+
+	<select id="countCategoryA" resultType="int" parameterType="map">
+		SELECT COUNT(*)
+		FROM category_a
+		WHERE manager_id = #{manager_id} AND category_a_no = #{category_a_no}
+	</select>
+	<select id="countCategoryB" resultType="int" parameterType="map">
+		SELECT COUNT(*)
+		FROM category_b
+		WHERE manager_id = #{manager_id} AND category_b_no = #{category_b_no}
+	</select>
+	<select id="countCategoryC" resultType="int" parameterType="map">
+		SELECT COUNT(*)
+		FROM category_c
+		WHERE manager_id = #{manager_id} AND category_c_no = #{category_c_no}
+	</select>
+
+	<update id="updateOneProduct" parameterType="map">
+		UPDATE product2 SET
+		<if test="null != updated_no">
+			product_no = #{updated_no},
+		</if>
+		product_name = #{product_name},
+		purchase_cost = #{purchase_cost},
+		sales_price = #{sales_price}
+		WHERE manager_id = #{manager_id} AND product_no = #{product_no}
+	</update>
+	<update id="updateOneSales" parameterType="map">
+		UPDATE sales2 SET
+		<if test="null != updated_no">
+			product_no = #{updated_no}
+		</if>
+		WHERE manager_id = #{manager_id} AND product_no = #{product_no}
+	</update>
+	<update id="updateOnePurchase" parameterType="map">
+		UPDATE purchase2 SET
+		<if test="null != updated_no">
+			product_no = #{updated_no}
+		</if>
+		WHERE manager_id = #{manager_id} AND product_no = #{product_no}
+	</update>
+	<update id="updateProductCnt" parameterType="map">
+		UPDATE product2 SET
+		product_cnt = product_cnt + #{change_cnt}
+		WHERE manager_id = #{manager_id} AND product_no = #{product_no}
+	</update>
+	<update id="updateOneCategoryA" parameterType="map">
+		UPDATE category_a SET
+		category_a_no = #{updated_no},
+		category_a_name =
+		#{category_a_name}
+		WHERE manager_id = #{manager_id} AND category_a_no = #{category_a_no}
+	</update>
+	<update id="updateOneCategoryB" parameterType="map">
+		<if test="null != category_b_pk">
+			UPDATE category_b SET
+			category_a_no = #{category_a_no},
+			category_b_no = #{updated_no},
+			category_b_name = #{category_b_name}
+			WHERE manager_id = #{manager_id} AND category_b_no = #{category_b_no}
+		</if>
+		<if test="null != category_a_pk">
+			UPDATE category_b SET
+			category_a_no = #{updated_no}
+			WHERE manager_id = #{manager_id} AND category_a_no = #{category_a_no}
+		</if>
+	</update>
+	<update id="updateOneCategoryC" parameterType="map">
+		<if test="null != category_c_pk">
+			UPDATE category_c SET
+			category_b_no = #{category_b_no},
+			category_c_no = #{updated_no},
+			category_c_name = #{category_c_name}
+			WHERE manager_id = #{manager_id} AND category_c_no = #{category_c_no}
+		</if>
+		<if test="null != category_b_pk">
+			UPDATE category_c SET
+			category_b_no = #{updated_no}
+			WHERE manager_id = #{manager_id} AND category_b_no = #{category_b_no}
+		</if>
+	</update>
+
+	<insert id="insertOneProduct" parameterType="map">
+		INSERT INTO product2 (
+		manager_id,
+		product_no,
+		product_name,
+		purchase_cost,
+		sales_price
+		) VALUES (
+		#{manager_id},
+		#{product_no},
+		#{product_name},
+		#{purchase_cost},
+		#{sales_price}
+		)
+	</insert>
+	<insert id="insertOneSales" parameterType="map">
+		INSERT INTO sales2 (
+		manager_id,
+		product_no,
+		sales_price,
+		sales_cnt
+		) VALUES (
+		#{manager_id},
+		#{product_no},
+		#{sales_price},
+		#{sales_cnt}
+		)
+	</insert>
+	<insert id="insertOnePurchase" parameterType="map">
+		INSERT INTO purchase2 (
+		manager_id,
+		product_no,
+		purchase_cost,
+		purchase_cnt
+		) VALUES (
+		#{manager_id},
+		#{product_no},
+		#{purchase_cost},
+		#{purchase_cnt}
+		)
+	</insert>
+	<insert id="insertOneCategoryA" parameterType="map">
+		INSERT INTO category_a (
+		manager_id,
+		category_a_no
+		) VALUES (
+		#{manager_id},
+		#{category_a_no}
+		)
+	</insert>
+	<insert id="insertOneCategoryB" parameterType="map">
+		INSERT INTO category_b (
+		manager_id,
+		category_a_no,
+		category_b_no,
+		category_b_name
+		) VALUES (
+		#{manager_id},
+		#{category_a_no},
+		#{category_b_no},
+		#{category_b_name}
+		)
+	</insert>
+	<insert id="insertOneCategoryC" parameterType="map">
+		INSERT INTO category_c (
+		manager_id,
+		category_b_no,
+		category_c_no,
+		category_c_name
+		) VALUES (
+		#{manager_id},
+		#{category_b_no},
+		#{category_c_no},
+		#{category_c_name}
+		)
+	</insert>
+
+	<delete id="deleteOneProduct" parameterType="map">
+		DELETE FROM product2
+		WHERE product_pk = #{product_pk}
+	</delete>
+	<delete id="deleteOneSales" parameterType="map">
+		DELETE FROM sales2
+		WHERE sales_pk = #{sales_pk}
+	</delete>
+	<delete id="deleteOnePurchase" parameterType="map">
+		DELETE FROM purchase2
+		WHERE purchase_pk = #{purchase_pk}
+	</delete>
+
+	<delete id="deleteSalesByProduct" parameterType="map">
+		DELETE FROM sales2
+		WHERE product_no = #{product_no}
+	</delete>
+	<delete id="deletePurchaseByProduct" parameterType="map">
+		DELETE FROM purchase2
+		WHERE product_no = #{product_no}
+	</delete>
+	<delete id="deleteOneCategoryA" parameterType="map">
+		DELETE FROM category_a
+		WHERE category_a_pk = #{category_a_pk}
+	</delete>
+	<delete id="deleteOneCategoryB" parameterType="map">
+		DELETE FROM category_b
+		WHERE category_b_pk = #{category_b_pk}
+	</delete>
+	<delete id="deleteOneCategoryC" parameterType="map">
+		DELETE FROM category_c
+		WHERE category_c_pk = #{category_c_pk}
+	</delete>
+
+
+</mapper>  

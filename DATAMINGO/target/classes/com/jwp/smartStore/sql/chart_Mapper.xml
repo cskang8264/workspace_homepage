@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jwp.smartStore.sql.chart_Mapper">
+
+	<select id="selectOrderMonth" resultType="map"
+		parameterType="map">
+		select * from order_month
+
+	</select>
+
+	<select id="selectOrderYear" resultType="map"
+		parameterType="map">
+		SELECT month(order_date) AS 'month'
+		, COUNT(order_date)
+		AS
+		'cnt'
+		FROM
+		order_month
+		WHERE manager_id='manager'
+		GROUP BY
+		month(order_date)
+		ORDER
+		BY
+		month(order_date) asc;
+
+	</select>
+
+
+	<!-- <select id="sumLoss" resultType="int" parameterType="map"> SELECT sum(loss_cnt) 
+		FROM loss WHERE manager_id = #{manager_id} AND date(loss_timestamp) BETWEEN 
+		subdate(curdate(),date_format(curdate(),'%w')-1) AND subdate(curdate(),date_format(curdate(),'%w')-7); 
+		</select> <select id="sumPurchase" resultType="int" parameterType="map"> 
+		SELECT sum(purchase_cnt) FROM purchase2 WHERE manager_id = #{manager_id} 
+		AND date(purchase_timestamp) BETWEEN subdate(curdate(),date_format(curdate(),'%w')-1) 
+		AND subdate(curdate(),date_format(curdate(),'%w')-7); </select> -->
+
+	<select id="orderCountByManagerId" resultType="map"
+		parameterType="map">
+		SELECT DATE_FORMAT(order_date,'%Y%m%d') AS date,
+		count(*) as cnt
+		FROM
+		order_month
+		WHERE manager_id = 'manager'
+		<!-- WHERE date(order_date) BETWEEN subdate(curdate(),date_format(curdate(),'%w')-1) 
+			AND subdate(curdate(),date_format(curdate(),'%w')-7) -->
+		GROUP BY DATE_FORMAT(order_date,
+		'%Y%m%d') ORDER BY date ASC;
+
+	</select>
+
+	<select id="accuOrderCountByManagerId" resultType="map"
+		parameterType="map">
+		SELECT DATE_FORMAT(`order_date`, '%Y-%m-%d') visit_date, COUNT(*) AS
+		visit_cnt FROM order_month WHERE manager_id = 'manager' GROUP BY
+		visit_date
+		ORDER BY visit_date ASC;
+		<if test='limitation != "" and limitation != null'>
+			LIMIT #{limitation}
+		</if>
+	</select>
+
+
+	<select id="orderCountByMenu" resultType="map"
+		parameterType="map">
+		select count(menu_name)as menu_count ,menu_name
+		from
+		order_detail
+		inner join menu on order_detail.goods_pk =
+		menu.menu_index
+		group by menu_name
+		order by menu_count DESC
+		limit 5
+		;
+
+	</select>
+
+	<select id="orderCountByTime" resultType="map"
+		parameterType="map">
+		SELECT HOUR(order_date) AS 'hour'
+		, COUNT(order_date) AS
+		'cnt'
+		FROM order_month
+		WHERE order_date between '2020-02-01 10:00:00'
+		and '2020-02-29 22:00:00'
+		GROUP BY HOUR(order_date)
+		ORDER BY
+		HOUR(order_date) asc;
+	</select>
+
+	<select id="getEnterEmoProbByTime" resultType="map"
+		parameterType="map">
+		SELECT HOUR(vision_timestamp) AS 'hour'
+		,
+		COUNT(vision_timestamp) AS 'cnt',
+		AVG(prob) AS 'avg_prob'
+		FROM vision
+		WHERE vision_timestamp between '2020-02-01 10:00:00' and '2020-02-29
+		22:00:00'
+		AND vision_id ='vs_1'
+		AND emo = #{emo}
+
+		GROUP BY
+		HOUR(vision_timestamp)
+		ORDER BY HOUR(vision_timestamp) asc;
+	</select>
+	<select id="getOutEmoProbByTime" resultType="map"
+		parameterType="map">
+		SELECT HOUR(vision_timestamp) AS 'hour'
+		,
+		COUNT(vision_timestamp) AS 'cnt',
+		AVG(prob) AS 'avg_prob'
+		FROM vision
+		WHERE vision_timestamp
+		between '2020-02-01 10:00:00' and '2020-02-29
+		22:00:00'
+		AND vision_id
+		='vs_b8:27:eb:56:c4:87'
+		AND emo = #{emo}
+
+		GROUP BY
+		HOUR(vision_timestamp)
+		ORDER BY HOUR(vision_timestamp) asc;
+
+	</select>
+	<select id="CountByAge" resultType="map" parameterType="map">
+
+		SELECT
+		count(*) as 'total',
+		count(case when age between 10 and 19 then 1 end)
+		as 'teenage' ,
+		count(case when age between 20 and 29 then 1 end) as
+		'twenties' ,
+		count(case when age between 30 and 39 then 1 end) as
+		'thirties' ,
+		count(case when age between 40 and 49 then 1 end) as
+		'forties'
+		FROM vision
+		where vision_id = 'vs_1';
+	</select>
+
+	<select id="getTargetValue" resultType="map" parameterType="map">
+
+		SELECT target_sales
+		from manager
+		where manager_id="gunja";
+
+	</select>
+
+
+	<select id="getOrderCountWeek" resultType="map"
+		parameterType="map">
+		SELECT DATE_FORMAT(order_date,'%Y%m%d') AS date,
+		count(*) as cnt
+		FROM
+		order_month
+		WHERE date(order_date) BETWEEN
+		subdate(curdate(),date_format(curdate(),'%w')-1)
+		AND
+		subdate(curdate(),date_format(curdate(),'%w')-7)
+		GROUP BY
+		DATE_FORMAT(order_date,
+		'%Y%m%d') ORDER BY date ASC;
+
+	</select>
+
+
+
+
+
+	<select id="getUsersByDate" resultType="map" parameterType="map">
+
+		SELECT DATE(order_date) AS 'date',
+		count(user_id) as 'users'
+		FROM
+		order_month
+		WHERE <!-- order_date between '2020-02-01 10:00:00' and '2020-02-29 
+			22:00:00' and -->
+		manager_id = 'manager'
+		GROUP BY
+		DATE(order_date);
+
+	</select>
+
+
+
+	<select id="getNewUsersByDate" resultType="map"
+		parameterType="map">
+		select cast(minDate as Date) as FirstVisitDate ,
+		count(*) as
+		FirstTimeVisitors
+		from (select
+		user_id, min(order_date) as
+		minDate
+		from order_month t
+		WHERE
+		manager_id = 'manager'
+		group by user_id
+		)
+		i
+		WHERE date(cast(minDate as
+		Date)) BETWEEN
+		subdate(curdate(),date_format(curdate(),'%w')-1)
+		AND
+		subdate(curdate(),date_format(curdate(),'%w')-7)
+		group by cast(minDate
+		as Date)
+		order by 1
+	</select>
+
+	<select id="getAdCountByManger" resultType="map"
+		parameterType="map">
+		SELECT DATE(ad_timestamp) as date , count(*) as adCnt
+
+		FROM ad_cnt
+		WHERE shop_id='manager'
+		GROUP BY date;
+	</select>
+
+
+
+	<select id="getRatingWithMenu" resultType="map"
+		parameterType="map">
+		SELECT user_id, order_price, review_score, order_date,
+		(SELECT
+		GROUP_CONCAT(menu_name SEPARATOR ', ') FROM
+		order_today_product inner
+		join menu on order_today_product.menu_index
+		= menu.menu_index WHERE
+		order_pk = order_month.order_pk GROUP BY
+		'all') as menuList
+		FROM
+		order_month WHERE review_score != 0 AND user_id != 'XX_unassigned'
+		order by order_date desc
+
+		<if test="limitation != null ">
+			LIMIT ${startNo}, ${limitation}
+		</if>
+		;
+	</select>
+
+
+	<select id="getRatingbyMenu" resultType="map"
+		parameterType="map">
+		SELECT menu_name, round(avg(review_score),1) as
+		goods_avg
+		FROM (SELECT order_today_product.order_pk, menu_name, review_score FROM
+		order_today_product inner join menu on order_today_product.menu_index
+		= menu.menu_index inner join order_month on order_month.order_pk =
+		order_today_product.order_pk where order_month.manager_id = 'manager')
+		as detail
+
+		GROUP BY menu_name;
+
+	</select>
+
+
+
+	<select id="selectRowCount" resultType="Integer">
+
+		SELECT count(*)
+		FROM
+		order_month WHERE review_score != 0 AND user_id != 'XX_unassigned';
+
+	</select>
+
+
+
+
+
+
+	<!-- <select id="findShop" resultType="map" parameterType="map"> SELECT 
+		*, ((ACOS(SIN(${lat} * PI() / 180) * SIN(lat * PI() / 180) + COS(${lat} * 
+		PI() / 180) * COS(lat * PI() / 180) * COS((${lng} - lng) * PI() / 180)) * 
+		180 / PI()) * 60 * 1.1515 * 1.609344) as distance FROM shop HAVING distance 
+		<![CDATA[ <= ]]> 10 ORDER BY distance ASC LIMIT 10 </select> -->
+
+</mapper>
+
